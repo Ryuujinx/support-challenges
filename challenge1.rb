@@ -4,6 +4,13 @@ require 'rubygems'
 require 'fog'
 
 
+
+#This  will read from ~/.rackspace_cloud_credentials
+#The format should be
+#username: <User>
+#api_key: <Api_key>
+
+
 #You can override the ~/.rackspace_cloud_credentials here if you want. 
 username = ""
 api_key = ""
