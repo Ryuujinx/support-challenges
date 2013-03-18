@@ -44,7 +44,6 @@ conn = Fog::Compute.new(
 		server.reload
 		sleep 5 
 	end
-#	server.wait_for { ready? }
 	puts "==========Web#{var} Information========="
 	puts "Public IP Address: #{server.public_ip_address}"
 	puts "Password: #{server.password}"
