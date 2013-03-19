@@ -15,15 +15,15 @@ require 'fog'
 
 
 #Make sure we pass in a servername/uuid
-unless ARGV.size > 0
-	puts "usage: #{$0} servername|uuid"
+unless ARGV.size > 1
+	puts "usage: #{$0} servername|uuid dfw|ord"
 	exit(1)
 end
 
-#Save ARGV[1] so we can manipulate the variable later. We could only accept UUIDs, but this allows more flexibility
+#Save ARGV[] so we can manipulate the variables later. We could only accept UUIDs/one region, but this allows more flexibility
 
 servname = ARGV[0]
-
+region = ARGV[1]
 
 
 #You can override the ~/.rackspace_cloud_credentials here if you want. 
@@ -48,21 +48,35 @@ end
 
 
 #Set up our Compute object.
-conn = Fog::Compute.new(
-	:provider => 'Rackspace',
-	:rackspace_api_key => api_key,
-	:rackspace_username => username,
-	:version => :v2
-)
 
-
+if region.downcase == "dfw"
+	conn = Fog::Compute.new(
+		:provider => 'Rackspace',
+		:rackspace_api_key => api_key,
+		:rackspace_username => username,
+		:rackspace_region => :dfw,
+		:version => :v2
+	)
+elsif region.downcase == "ord"
+	conn = Fog::Compute.new(
+                :provider => 'Rackspace',
+                :rackspace_api_key => api_key,
+                :rackspace_username => username,
+                :rackspace_region => :ord,
+                :version => :v2
+        )
+else
+	puts "Invalid Region #{region}"
+	exit(1)
+end
 
 
 #Some Logic to try and figure out if ARGV[1] is a UUID or a Server.
 # First try it as a UUID
 server = conn.servers.get(servname)
-	if server.nil?	 #Apparently whoever wrote Fog decided it would be cute to return Nil instead of Fog::Compute::RackspaceV2::NotFound, so we check for that and then try to find a matching name.
+	if server.nil?	 #Apparently whoever wrote Fog decided it would be cute to return Nil instead of Fog::Compute::RackspaceV2::NotFound, so we check for that and then try to find a matching name
 		conn.servers.all.each do |servobj|
+			p servobj.name
 			if servobj.name == servname
 				server = conn.servers.get(servobj.id)
 				break  #No reason to keep going, we have our server. 
