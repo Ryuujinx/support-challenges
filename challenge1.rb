@@ -49,7 +49,7 @@ conn = Fog::Compute.new(
 		#Block until We have an IP 
 		puts "Build Started, waiting on IP..." 
 		server.reload
-		sleep 5 
+		sleep 10 
 	end
 	puts "==========Web#{var} Information========="
 	puts "Public IP Address: #{server.public_ip_address}"

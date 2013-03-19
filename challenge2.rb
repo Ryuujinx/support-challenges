@@ -11,6 +11,8 @@ require 'fog'
 #api_key: <Api_key>
 
 
+#If you have two nextgen servers with the same name, it will use whichever one is returned first from the API. Use the UUID instead in this case. 
+
 
 #Make sure we pass in a servername/uuid
 unless ARGV.size > 0
@@ -74,6 +76,7 @@ rescue Fog::Compute::RackspaceV2::NotFound
 		end
 	retry
 	end
+	raise "ServerNotFound"
 	
 end
 
@@ -93,15 +96,20 @@ end
 
 
 
-newserv = conn.servers.create(:flavor_id => server.flavor, :image_id => image.id, :name => "#{server.name}-clone-#{Time.new.strftime("%Y-%m-%d")}")
-puts "Starting Build..."	
+
+
+
+newserv = conn.servers.create(:flavor_id => server.flavor.id, :image_id => image.id, :name => "#{server.name}-clone-#{Time.new.strftime("%Y-%m-%d")}")
+puts "Starting Build..."
+newserv.reload	
 until ! newserv.public_ip_address.empty?
 	#Block until We have an IP
 	puts "Build Started, waiting on IP..."
 	newserv.reload
-	sleep 5
+	sleep 10
 end
 
 puts "==========#{server.name}-clone-#{Time.new.strftime("%Y-%m-%d")} Information========="
 puts "Public IP Address: #{newserv.public_ip_address}"
 puts "Password: #{newserv.password}"
+
