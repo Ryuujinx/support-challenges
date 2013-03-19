@@ -97,9 +97,9 @@ end
 
 
 
+t = Time.new
 
-
-newserv = conn.servers.create(:flavor_id => server.flavor.id, :image_id => image.id, :name => "#{server.name}-clone-#{Time.new.strftime("%Y-%m-%d")}")
+newserv = conn.servers.create(:flavor_id => server.flavor.id, :image_id => image.id, :name => "#{server.name}-clone-#{t.iso8601}")
 puts "Starting Build..."
 newserv.reload	
 until ! newserv.public_ip_address.empty?
@@ -109,7 +109,7 @@ until ! newserv.public_ip_address.empty?
 	sleep 10
 end
 
-puts "==========#{server.name}-clone-#{Time.new.strftime("%Y-%m-%d")} Information========="
+puts "==========#{server.name}-clone-#{t.iso8601} Information========="
 puts "Public IP Address: #{newserv.public_ip_address}"
 puts "Password: #{newserv.password}"
 
