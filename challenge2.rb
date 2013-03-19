@@ -59,26 +59,18 @@ conn = Fog::Compute.new(
 
 
 #Some Logic to try and figure out if ARGV[1] is a UUID or a Server.
-begin
-	# First try it as a UUID
-	server = conn.servers.get(servname)
-	if server.nil?
-		raise Fog::Compute::RackspaceV2::NotFound  #Apparently whoever wrote Fog decided it would be cute to return Nil instead of Fog::Compute::RackspaceV2::NotFound, as such we raise it ourselves here. I feel this is a bit cleaner then redefining the method. 
-	end
-rescue Fog::Compute::RackspaceV2::NotFound
-	unless servname != ARGV[0] #We only want to do the lookup once
+# First try it as a UUID
+server = conn.servers.get(servname)
+	if server.nil?	 #Apparently whoever wrote Fog decided it would be cute to return Nil instead of Fog::Compute::RackspaceV2::NotFound, so we check for that and then try to find a matching name.
 		conn.servers.all.each do |servobj|
-			if servobj.name == ARGV[0]
-				servname = servobj.id
+			if servobj.name == servname
+				server = conn.servers.get(servobj.id)
 				break  #No reason to keep going, we have our server. 
 			end
-		servname = nil
 		end
-	retry
 	end
-	raise "ServerNotFound"
+raise "ServerNotFound" if server.nil?
 	
-end
 
 
 #Now we make an image, yay
