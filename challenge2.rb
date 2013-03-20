@@ -79,7 +79,6 @@ end
 server = conn.servers.get(servname)
 	if server.nil?	 #Apparently whoever wrote Fog decided it would be cute to return Nil instead of Fog::Compute::RackspaceV2::NotFound, so we check for that and then try to find a matching name
 		conn.servers.all.each do |servobj|
-			p servobj.name
 			if servobj.name == servname
 				server = conn.servers.get(servobj.id)
 				break  #No reason to keep going, we have our server. 
