@@ -19,11 +19,14 @@ api_key = ""
 #Set up the vars for username and api_key
 if File.exists?(File.join(Dir.home, ".rackspace_cloud_credentials")) && username.empty? && api_key.empty?
 	f = File.open(File.join(Dir.home, ".rackspace_cloud_credentials"), 'r')
-
-	username = f.gets.split('=')[1].strip
-	api_key = f.gets.split('=')[1].strip
-	
-	f.close
+        begin
+                username = f.gets.split('=')[1].strip
+                api_key = f.gets.split('=')[1].strip
+                f.close
+        rescue NoMethodError
+		f.close
+                raise "Invalid credentials file format. Please consult the example file."
+        end
 elsif ! username.empty? && ! api_key.empty?
 	#This is only here so we don't raise an exception if the credentials file isn't there while we're using overrides
 else
