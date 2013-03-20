@@ -7,8 +7,8 @@ require 'fog'
 
 #This  will read from ~/.rackspace_cloud_credentials
 #The format should be
-#username: <User>
-#api_key: <Api_key>
+#username=<User>
+#api_key=<Api_key>
 
 
 #You can override the ~/.rackspace_cloud_credentials here if you want. 
@@ -20,8 +20,8 @@ api_key = ""
 if File.exists?(File.join(Dir.home, ".rackspace_cloud_credentials")) && username.empty? && api_key.empty?
 	f = File.open(File.join(Dir.home, ".rackspace_cloud_credentials"), 'r')
 
-	username = f.gets.split(':')[1].strip
-	api_key = f.gets.split(':')[1].strip
+	username = f.gets.split('=')[1].strip
+	api_key = f.gets.split('=')[1].strip
 	
 	f.close
 elsif ! username.empty? && ! api_key.empty?

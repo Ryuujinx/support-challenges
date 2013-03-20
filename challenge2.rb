@@ -7,8 +7,8 @@ require 'fog'
 
 #This  will read from ~/.rackspace_cloud_credentials
 #The format should be
-#username: <User>
-#api_key: <Api_key>
+#username=<User>
+#api_key=<Api_key>
 
 
 #If you have two nextgen servers with the same name, it will use whichever one is returned first from the API. Use the UUID instead in this case. 
@@ -35,8 +35,8 @@ api_key = ""
 if File.exists?(File.join(Dir.home, ".rackspace_cloud_credentials")) && username.empty? && api_key.empty?
 	f = File.open(File.join(Dir.home, ".rackspace_cloud_credentials"), 'r')
 
-	username = f.gets.split(':')[1].strip
-	api_key = f.gets.split(':')[1].strip
+	username = f.gets.split('=')[1].strip
+	api_key = f.gets.split('=')[1].strip
 	
 	f.close
 elsif ! username.empty? && ! api_key.empty?
