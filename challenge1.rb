@@ -11,6 +11,15 @@ require 'fog'
 #api_key=<Api_key>
 
 
+#Get seed name
+unless ARGV.size > 0
+	puts "usage: #{$0} baseservername"
+	exit(1)
+end
+
+srvname = ARGV[0]
+
+
 #You can override the ~/.rackspace_cloud_credentials here if you want. 
 username = ""
 api_key = ""
@@ -45,7 +54,7 @@ conn = Fog::Compute.new(
 
 
 [1,2,3].each do |var|
-	server = conn.servers.create(:flavor_id => 2, :image_id => 'a10eacf7-ac15-4225-b533-5744f1fe47c1', :name => "web#{var}")
+	server = conn.servers.create(:flavor_id => 2, :image_id => 'a10eacf7-ac15-4225-b533-5744f1fe47c1', :name => "#{srvname}#{var}")
 	puts "Starting Build..."
 	server.reload
 	until ! server.public_ip_address.empty? 
@@ -54,7 +63,7 @@ conn = Fog::Compute.new(
 		server.reload
 		sleep 10 
 	end
-	puts "==========Web#{var} Information========="
+	puts "==========#{srvname}#{var} Information========="
 	puts "Public IP Address: #{server.public_ip_address}"
 	puts "Password: #{server.password}"
 end
