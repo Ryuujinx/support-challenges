@@ -90,5 +90,4 @@ db = dbi.databases.create(
 dbi.users.create(
 	:identity => dbuser,
 	:password => dbpass,
-	:databases => dbname
 	)
