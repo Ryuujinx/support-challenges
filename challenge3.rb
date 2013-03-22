@@ -14,6 +14,8 @@ require 'find'
 username = ""
 api_key = ""
 
+
+#Make sure we pass in directory/container
 unless ARGV.size > 1
 	puts "usage: #{$0} directory container"
 	exit(1)
