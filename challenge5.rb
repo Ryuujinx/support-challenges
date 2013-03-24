@@ -71,18 +71,20 @@ until built
 	        :name => dbname
 	)
 	until dbi.state != "BUILD"
-		p dbi
+		puts "Database Instance is Building, Please Wait..."
 		dbi.reload
 		sleep 10
 	end
 	if dbi.state != "ACTIVE"
 		dbi.destroy
+		puts "Database Instance failed build, retrying..."
 	else
 		built = true
 	end
 end
 
-p dbi.name
+
+puts "Database Instance Built, creating DB and user..."
 
 db = dbi.databases.create(
 	:name => dbname
@@ -91,3 +93,5 @@ dbi.users.create(
 	:identity => dbuser,
 	:password => dbpass,
 	)
+
+puts "Database and user are created."
