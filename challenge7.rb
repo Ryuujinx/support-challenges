@@ -75,13 +75,11 @@ servs = []
 			sleep 10
 			server.reload
 		end
-		exit
 	end
 end
 
 
 
-p servs
 
 #Block Until all servers are built.
 we_be_blockin = true
@@ -97,11 +95,9 @@ while we_be_blockin
 	else
 		puts "Still Waiting on #{threadcounter} servers to finish building..."
 	end
-	sleep 5
-	p servs
+	sleep 10
 end	
 
-p servs
 
 servs.each do |s|
 	#Dump it all to STDOUT
