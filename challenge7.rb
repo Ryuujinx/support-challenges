@@ -98,11 +98,38 @@ while we_be_blockin
 	sleep 10
 end	
 
-
+toadd = []
 servs.each do |s|
-	#Dump it all to STDOUT
+	#Dump it all to STDOUT and build the array to add things to the LB
 	serv = conn.servers.get(s['id'])
 	puts "==========#{serv.name} Information========="
 	puts "Public IP Address: #{serv.public_ip_address}"
 	puts "Password: #{s['pass']}"
+	toadd << {:address => serv.private_ip_address, :port => 80, :condition => 'ENABLED'}
+end
+
+
+
+
+#Establish LB Connection
+lbconn = Fog::Rackspace::LoadBalancers.new(
+	:rackspace_api_key => api_key,
+	:rackspace_username => username
+)
+
+
+#Build an LB and add nodes
+lb = lbconn.load_balancers.create(
+	:name => "#{srvname}-LB",
+	:protocol => 'HTTP',
+	:port => 80,
+	:virtual_ips => [{:type => 'PUBLIC'}],
+	:nodes => toadd
+)
+
+#Dump ips to STDOUT
+
+puts "============#{srvname}-LB Ip addresses==========="
+lb.virtual_ips.each do |ips|
+	puts ips.address
 end
