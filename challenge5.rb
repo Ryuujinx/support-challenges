@@ -56,7 +56,6 @@ end
 
 #Set up our Compute object.
 conn = Fog::Rackspace::Databases.new(
-#	:provider => 'Rackspace',
 	:rackspace_api_key => api_key,
 	:rackspace_username => username,
 )
