@@ -52,7 +52,9 @@ Notes
 =====
 
 * The ~/.rackspace_cloud_credentials are expected to be in the format that is in the repo and located in that location. All scripts have a manual override if you want to just plug in your credentials there.
-* Challenge1.rb will build web1/2/3. This is not configurable. 
-* Challenge2.rb will work with either a UUID or Server Name. It only works with nextgen. If you use a server name, and you have two servers named the same thing, it will use the first one returned by the API. 
-
+* challenge1.rb will build <seedname>1/2/3. This is not configurable. 
+* challenge2.rb will work with either a UUID or Server Name. It only works with nextgen. If you use a server name, and you have two servers named the same thing, it will use the first one returned by the API.
+* challenge4.rb requires a valid IPv4 address and the zone to already exist. 
+* challenge6.rb will create an empty container if it does not exist, or enable an already existing container. 
+* challenge7.rb will name the servers <seedname>-1/2/(howevermany you specify) and the load balancer <seedname>-lb
 
