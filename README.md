@@ -48,6 +48,17 @@ Challenge 9
 ==========
 * Write an application that when passed the arguments FQDN, image, and flavor it creates a server of the specified image and flavor with the same name as the fqdn, and creates a DNS entry for the fqdn pointing to the server's public IP.
 
+Challenge 10
+===========
+Write an application that:
+* Creates 2 servers, supplying a ssh key to be installed at /root/.ssh/authorized_keys.
+* Creates a load balancer
+* Adds the 2 new servers to the LB
+* Sets up LB monitor and custom error page.
+* Creates a DNS record based on a FQDN for the LB VIP.
+* Write the error page html to a file in cloud files for backup.
+
+
 Notes
 =====
 
@@ -57,4 +68,4 @@ Notes
 * challenge4.rb requires a valid IPv4 address and the zone to already exist. 
 * challenge6.rb will create an empty container if it does not exist, or enable an already existing container. 
 * challenge7.rb will name the servers [seedname]-1/2/(howevermany you specify) and the load balancer [seedname]-lb
-
+* challenge10.rb will requires an error.html and sshkey.pub in the working direcrly. It will upload the error file to a container named Backup and will write it to error.html. It will overwrite any existing error.html, because that's how it works. 
